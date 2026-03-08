@@ -16,7 +16,10 @@ corpus = pd.read_pickle("data/corpus.pkl")
 cache_entries = []
 CACHE_THRESHOLD = 0.85
 
-app = FastAPI(title="Trademarkia Semantic Search")
+app = FastAPI(
+    title="Semantic Search",
+    description="By Archita Bajpai"
+)
 
 @app.post("/query")
 async def query_endpoint(req: QueryRequest):
