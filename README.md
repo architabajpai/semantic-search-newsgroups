@@ -56,7 +56,7 @@ Then double-click `start.bat` and open http://localhost:8000/docs
 | Cache Hit Rate | 92.6% on paraphrases |
 | Query Latency | <100ms |
 
-**Cache hit example:** "gun control debate" vs "guns control discussion" = **92.6% similarity** ✅
+**Cache hit example:** "gun control debate" vs "guns control discussion" = **92.6% similarity** 
 
 ---
 
