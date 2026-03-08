@@ -7,7 +7,7 @@ Double-click `start.bat` → Open `http://localhost:8000/docs`
 20NG Dataset → Preprocessing → MiniLM-L6-v2 → FAISS → GMM(K=5) → Semantic Cache → FastAPI
 
 ## Key Results
-- **Cache Hit**: "gun control debate" vs "guns control discussion" = **92.6% similarity**
+- **Cache Hit** (example): "gun control debate" vs "guns control discussion" = **92.6% similarity**
 - **Fuzzy Clustering**: BIC-optimal K=5 clusters (not arbitrary 20 categories)
 - **Vector Search**: FAISS returns relevant gun control debates instantly
 
