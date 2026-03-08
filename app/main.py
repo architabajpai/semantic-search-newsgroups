@@ -6,13 +6,11 @@ from app.clustering import get_gmm
 import pandas as pd
 import numpy as np
 
-# Global state - NO CLASSES
 model = get_embedding_model()
 index = get_vector_store()
 gmm = get_gmm()
 corpus = pd.read_pickle("data/corpus.pkl")
 
-# SIMPLE DICT CACHE
 cache_entries = []
 CACHE_THRESHOLD = 0.85
 
@@ -24,16 +22,13 @@ app = FastAPI(
 @app.post("/query")
 async def query_endpoint(req: QueryRequest):
     global cache_entries
-    
-    # Generate embedding
+
     q_emb = model.encode([req.query])[0]
     
-    # SIMPLE CACHE LOOKUP (numpy safe)
     cache_hit = None
     best_score = 0
     
     for entry in cache_entries:
-        # SAFE DOT PRODUCT (no reshape issues)
         score = np.dot(q_emb / np.linalg.norm(q_emb), 
                       entry["embedding"] / np.linalg.norm(entry["embedding"]))
         if score > best_score and score > CACHE_THRESHOLD:
@@ -49,8 +44,6 @@ async def query_endpoint(req: QueryRequest):
             "result": cache_hit["result"],
             "dominant_cluster": cache_hit["cluster"]
         }
-    
-    # MISS: Do vector search
     scores, indices = index.search(q_emb.reshape(1, -1).astype("float32"), 5)
     top_docs = []
     
@@ -60,11 +53,9 @@ async def query_endpoint(req: QueryRequest):
     
     result = "Top matches:\n" + "\n\n".join(top_docs) if top_docs else "No relevant matches"
     
-    # Get cluster
     probs = gmm.predict_proba(q_emb.reshape(1, -1))[0]
     cluster_id = int(np.argmax(probs))
     
-    # Store in cache
     cache_entries.append({
         "query": req.query,
         "embedding": q_emb.copy(),
@@ -82,10 +73,10 @@ async def query_endpoint(req: QueryRequest):
 @app.get("/cache/stats")
 async def stats():
     total_queries = len(cache_entries)
-    hits = sum(1 for e in cache_entries if True)  # Simplified
+    hits = sum(1 for e in cache_entries if True)
     return {
         "total_entries": len(cache_entries),
-        "hit_count": 0,  # Will show real hits in UI
+        "hit_count": 0,  
         "miss_count": total_queries,
         "hit_rate": 0.0
     }

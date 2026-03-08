@@ -14,5 +14,5 @@ df = pd.DataFrame({
 df["word_count"] = df["text"].str.split().str.len()
 df = df[df["word_count"] > 50].reset_index(drop=True)  # Filter short docs
 df.to_pickle("data/processed_corpus.pkl")
-print(f"✅ Processed {len(df)} documents")
+print(f"Processed {len(df)} documents")
 
