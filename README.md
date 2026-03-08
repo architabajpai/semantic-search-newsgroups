@@ -84,12 +84,14 @@ Then double-click `start.bat` and open http://localhost:8000/docs
     ├── data/
     │   ├── vector.index     # FAISS (~20MB)
     │   ├── embeddings.npy   # 384d vectors
+    |   ├── corpus.pkl
     │   └── gmm.pkl          # Trained model
     ├── scripts/
     │   ├── preprocess.py
     │   ├── build_index.py
     │   └── train_gmm.py
     ├── start.bat
+    ├── demo.bat
     └── requirements.txt
 
 ---
